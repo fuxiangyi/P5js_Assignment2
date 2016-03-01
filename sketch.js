@@ -8,6 +8,7 @@ var connections = [];
 
 
 
+
 function preload(){
     table1 = loadTable("data/investments.csv","csv","header"); 
     table2 = loadTable("data/companies_categories.csv","csv","header"); 
@@ -23,9 +24,7 @@ function setup() {
     textFont("Futura");
     textStyle(BOLD);
     
-    colorMode(HSB,360,100,100,1);
-//    print(table1.getRowCount() + " total rows in table");
-//    print(table2.getRowCount() + " total rows in table");
+    colorMode(HSB,255,255,255,1);
     
     for(var r=0; r<table1.getRowCount();r++){
         var comName = table1.getString(r,"company_name");// get the data from csv file  p5.Table reference
@@ -49,12 +48,11 @@ function setup() {
         var categories = table2.getString(r,"category_code");
         if(categories){ // if invested is a number(if invested is not a NaN)
                 cCategory[comName] = categories;//create object of array =obj["company_name"] = string + string 
-               //aggregated{comName} += invested;
-//               
+              
              }else{
                 cCategory[comName] = 0;
             }
-         //print(categories);
+        
 
         }
          
@@ -78,53 +76,22 @@ function setup() {
         company.category = cCategory[name];
         category.push(company);
     });
-     //print(category);
+   
     
  aAggregated.sort(function(a,b){ //array.sort -- comparason function -- number, string, object
         return b.sum -a.sum;  //sort desending order here   -- asending order a.sum - b.sum
        });
        aAggregated = aAggregated.slice(0,100);// slice the array from first to 100;
- // print(aAggregated);  
- for(var r=0; r<table2.getRowCount();r++){//second parse data
-        var comName = table2.getString(r,"name");// get the data from csv file  p5.Table reference
-        var categories = table2.getString(r,"category_code");
-       
-        
-            var foundCategory = category.find(function(element, index, array){
-                return element.name == comName;
-            });
-        if(foundCategory){
-             var foundCompany = aAggregated.find(function(element, index, array){
-               return element.name == comName;
-            });
-            if(foundCompany){
-                var connection = {};
-                connection.company = foundCompany;//object from aAggregated
-               connection.category = foundCategory;//object from investors
-                connections.push(connection);  
-            }
-            
-        }
-    
-          
-    }
-        connections.sort(function(a,b){ //array.sort -- comparason function -- number, string, object
-        return b.company.sum -a.company.sum;  //sort desending order here   -- asending order a.sum - b.sum
-       });
-       connections = connections.slice(0,100);// slice the array from first to 100;
-    
-    //print(connections);
 
-    for(var i=0;i<connections.length;i++){
-        var p = new Particles(connections[i].company.name,connections[i].company.sum,connections[i].category.category);
+    
+    print(aAggregated);
+
+    for(var i=0;i<aAggregated.length;i++){
+        var p = new Particles(aAggregated[i].name,aAggregated[i].sum);
         particleSystem.push(p);
        
     }
     
-//var ont = "0x" + 'mo';
-//
-//
-//print(parseInt(ont,36));
 
    
     
@@ -135,7 +102,7 @@ function setup() {
 
 function draw() {
     
-    background(10);
+    background(255);
   
        
     for(var STEP=0; STEP <3; STEP ++){  //itteration about the collsion. 
@@ -170,8 +137,6 @@ function draw() {
     
         }
     
- 
-
 
              
    attractors.forEach(function(at){
@@ -192,24 +157,63 @@ function windowResized(){
 
 
 //create a single particle.
-var Particles = function(name,sum,category){
+var Particles = function(name,sum){
     this.name = name;
     this.sum = sum;
-    this.category = category;
-    //print(this.category);
+    var R;
+    var G;
+    var B;
+    
+    var rowCat = table2.findRow(this.name, "name");
+    if(rowCat != null){
+        this.category = rowCat.get("category_code"); 
+    } else{
+        print(this.name);
+        this.category = "other";
+    }
+    
+    switch(this.category){
+        case "web":
+            R = 219;
+            G = 77;
+            B = 109;   
+            break;
+        case "cleantech":
+            R = 100;
+            G = 106;
+            B = 88;
+            break;
+        case "hospitality":
+            R = 55;
+            G = 107;
+            B = 109;
+            break;
+        case "biotech":
+            R = 106;
+            G = 76;
+            B = 156;
+            break;
+        case "software":
+            R = 199;
+            G = 62;
+            B = 58
+            break;
+        case "mobile":
+            R = 125;
+            G = 185;
+            B = 222;
+            break;
+        default: 
+            R =101;
+            G =103;
+            B =101;
+    }
     
     var isMouseOver = false;
     
     
-    this.radius = sqrt(sum)/4000;
-    var H = parseInt(category[0],36);
-    var S = parseInt(category[2],36);
-    var B = parseInt(category[3],36);
-   // var T = parseInt(category[3],36);
-    
-    
-    //this.hue =sqrt(sqrt(sqrt(invervet)));
-    //this.hue = 0;
+    this.radius = sqrt(sum)/3500;
+
 
     var initialRadius = this.radius;
     var maxR = 70;
@@ -252,7 +256,8 @@ var Particles = function(name,sum,category){
        if(isMouseOver){
            fill(100,0,100);
        }else{
-         fill(H*H/5,(S+3)*6,B*(B+5)/6);  
+           fill(R,G,B);
+        // fill(H*H/5,(S+3)*6,B*(B+5)/6);  
        }
         
         ellipse(this.position.x, this.position.y,this.radius*2, this.radius*2);
