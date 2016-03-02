@@ -212,7 +212,7 @@ var Particles = function(name,sum){
     var isMouseOver = false;
     
     
-    this.radius = sqrt(sum)/3500;
+    this.radius = sqrt(sum)/4000;
 
 
     var initialRadius = this.radius;
@@ -257,7 +257,7 @@ var Particles = function(name,sum){
            fill(100,0,100);
        }else{
            fill(R,G,B);
-        // fill(H*H/5,(S+3)*6,B*(B+5)/6);  
+        
        }
         
         ellipse(this.position.x, this.position.y,this.radius*2, this.radius*2);
@@ -267,7 +267,7 @@ var Particles = function(name,sum){
            fill(0,0,0);
             text(this.name, this.position.x,this.position.y);
             text(this.sum, this.position.x, this.position.y + 16);
-            text(category, this.position.x, this.position.y + 32);
+            text(this.category, this.position.x, this.position.y + 32);
        }
    }
  
