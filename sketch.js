@@ -179,7 +179,7 @@ var Particles = function(name,sum){
             B = 109;   
             break;
         case "cleantech":
-            R = 100;
+            R = 200;
             G = 106;
             B = 88;
             break;
