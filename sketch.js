@@ -24,7 +24,7 @@ function setup() {
     textFont("Futura");
     textStyle(BOLD);
     
-    colorMode(HSB,255,255,255,1);
+    colorMode(RGB,255,255,255,1);
     
     for(var r=0; r<table1.getRowCount();r++){
         var comName = table1.getString(r,"company_name");// get the data from csv file  p5.Table reference
@@ -173,40 +173,40 @@ var Particles = function(name,sum){
     }
     
     switch(this.category){
-        case "web":
-            R = 219;
-            G = 77;
-            B = 109;   
+        case "ecommerce":
+            R = 30;
+            G = 100;
+            B = 255;   
             break;
         case "cleantech":
-            R = 200;
-            G = 106;
-            B = 88;
+            R = 46;
+            G = 139;
+            B = 87;
             break;
         case "hospitality":
-            R = 55;
-            G = 107;
-            B = 109;
+            R = 72;
+            G = 61;
+            B = 139;
             break;
         case "biotech":
-            R = 106;
-            G = 76;
-            B = 156;
+            R = 205;
+            G = 92;
+            B = 92;
             break;
         case "software":
-            R = 199;
-            G = 62;
+            R = 200;
+            G = 0;
             B = 58
             break;
         case "mobile":
-            R = 125;
-            G = 185;
-            B = 222;
+            R = 0;
+            G = 10;
+            B = 100;
             break;
         default: 
-            R =101;
-            G =103;
-            B =101;
+            R =205;
+            G =193;
+            B =197;
     }
     
     var isMouseOver = false;
@@ -254,7 +254,7 @@ var Particles = function(name,sum){
        
         noStroke();
        if(isMouseOver){
-           fill(100,0,100);
+           fill(255,255,255);
        }else{
            fill(R,G,B);
         
